@@ -51,7 +51,15 @@
         "summary": "Get water state",
         "responses": {
           "200": {
-            "description": "Water state retrieved"
+            "description": "Water state retrieved",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
