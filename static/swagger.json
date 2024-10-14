@@ -1,0 +1,80 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Smart Office API",
+    "description": "API for controlling light and water systems",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "paths": {
+    "/lightstate": {
+      "get": {
+        "summary": "Get light state",
+        "responses": {
+          "200": {
+            "description": "Light state retrieved",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/light/on": {
+      "post": {
+        "summary": "Turn light on",
+        "responses": {
+          "200": {
+            "description": "Light turned on"
+          }
+        }
+      }
+    },
+    "/light/off": {
+      "post": {
+        "summary": "Turn light off",
+        "responses": {
+          "200": {
+            "description": "Light turned off"
+          }
+        }
+      }
+    },
+    "/waterstate": {
+      "get": {
+        "summary": "Get water state",
+        "responses": {
+          "200": {
+            "description": "Water state retrieved"
+          }
+        }
+      }
+    },
+    "/water/on": {
+      "post": {
+        "summary": "Turn water on",
+        "responses": {
+          "200": {
+            "description": "Water turned on"
+          }
+        }
+      }
+    },
+    "/water/off": {
+      "post": {
+        "summary": "Turn water off",
+        "responses": {
+          "200": {
+            "description": "Water turned off"
+          }
+        }
+      }
+    }
+  }
+}
