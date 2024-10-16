@@ -10,8 +10,8 @@ API_URL = '/static/swagger.json'
 swaggerui_blueprint = get_swaggerui_blueprint(SWAGGER_URL, API_URL)
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
-light_state = {"status": "off"}
-water_state = {"status": "off"}
+light_state = {"status": "on"}
+water_state = {"status": "on"}
 
 @app.route('/lightstate', methods=['GET'])
 def get_light_state():
@@ -43,3 +43,4 @@ def turn_off_water():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+    
