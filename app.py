@@ -9,7 +9,7 @@ import click
 
 
 app = Flask(__name__)
-CORS(app, origins=["https://smartof.vercel.app"])
+CORS(app)
 
 
 # Database configuration
