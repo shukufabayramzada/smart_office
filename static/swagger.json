@@ -5,7 +5,7 @@
     "description": "API for controlling light and water systems",
     "version": "1.0.0"
   },
-  "host": "https://smart-office.onrender.com",
+  "host": "smart-office.onrender.com",
   "basePath": "/",
   "paths": {
     "/lightstate/{light_id}": {
