@@ -5,15 +5,39 @@
     "description": "API for controlling light and water systems",
     "version": "1.0.0"
   },
-  "host": "smart-office.onrender.com",
+  "host": "127.0.0.1:8000",
   "basePath": "/",
   "paths": {
-    "/lightstate/{light_id}": {
+    "/lightstates": {
+      "get": {
+        "summary": "Get all light states",
+        "responses": {
+          "200": {
+            "description": "Light states retrieved",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Light not found"
+          }
+        }
+      }
+    },
+    "/lightstate/{id}": {
       "get": {
         "summary": "Get light state",
         "parameters": [
           {
-            "name": "light_id",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "integer",
@@ -41,26 +65,27 @@
         }
       }
     },
-    "/light/{light_id}": {
+    "/lightstates/{id}": {
       "patch": {
         "summary": "Turn light on or off",
         "parameters": [
           {
-            "name": "light_id",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "integer",
             "description": "ID of the light to update"
           },
           {
-            "name": "action",
             "in": "body",
+            "name": "body",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "action": {
+                "status": {
                   "type": "string",
+                  "description": "Desired light status",
                   "enum": ["on", "off"]
                 }
               }
@@ -88,12 +113,36 @@
         }
       }
     },
-    "/waterstate/{water_id}": {
+    "/waterstates": {
+      "get": {
+        "summary": "Get all water states",
+        "responses": {
+          "200": {
+            "description": "Water states retrieved",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Water not found"
+          }
+        }
+      }
+    },
+    "/waterstate/{id}": {
       "get": {
         "summary": "Get water system state",
         "parameters": [
           {
-            "name": "water_id",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "integer",
@@ -121,26 +170,27 @@
         }
       }
     },
-    "/water/{water_id}": {
+    "/waterstates/{id}": {
       "patch": {
         "summary": "Turn water on or off",
         "parameters": [
           {
-            "name": "water_id",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "integer",
             "description": "ID of the water system to update"
           },
           {
-            "name": "action",
             "in": "body",
+            "name": "body",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "action": {
+                "status": {
                   "type": "string",
+                  "description": "Desired water system status",
                   "enum": ["on", "off"]
                 }
               }

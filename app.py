@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
-from models.models import Light, WaterSystem
+from models.light import Light
+from models.water import Water
 from database.db import db
 from flask_migrate import Migrate
 from flask.cli import with_appcontext
@@ -39,13 +40,14 @@ def add_sample_data():
         db.session.commit()
 
     # Add sample water systems
-    if not WaterSystem.query.first():
-        water1 = WaterSystem(id=1, status='on')
-        water2 = WaterSystem(id=2, status='on')
+    if not Water.query.first():
+        water1 = Water(id=1, status='on')
+        water2 = Water(id=2, status='on')
         db.session.add_all([water1, water2])
         db.session.commit()
 
     print("Sample data added to the database.")
+
 
 # Register the command with the Flask app
 app.cli.add_command(add_sample_data)
@@ -56,8 +58,17 @@ app.cli.add_command(add_sample_data)
 def index():
     return "Welcome to Smart Office!"
 
+
+# Get all light states
+@app.route('/lightstates', methods=['GET'])
+def get_all_light_states():
+    lights = Light.query.all()
+    light_states = [light.to_dict() for light in lights]
+    return jsonify(light_states), 200
+
+
 # Get light state
-@app.route('/lightstate/<int:light_id>', methods=['GET'])
+@app.route('/lightstates/<int:light_id>', methods=['GET'])
 def get_light_state(light_id):
     light = Light.query.get(light_id)
     if light:
@@ -65,15 +76,16 @@ def get_light_state(light_id):
     else:
         return jsonify({"error": "Light not found"}), 404
 
+
 # Update light state
-@app.route('/light/<int:light_id>', methods=['PATCH'])
+@app.route('/lightstates/<int:light_id>', methods=['PATCH'])
 def update_light_state(light_id):
     light = Light.query.get(light_id)
     if not light:
         return jsonify({"error": "Light not found"}), 404
 
     data = request.get_json()
-    action = data.get('action')
+    action = data.get('status')
 
     if action in ['on', 'off']:
         light.status = action
@@ -82,24 +94,34 @@ def update_light_state(light_id):
     else:
         return jsonify({"error": "Invalid action"}), 400
 
+
+# Get all water states
+@app.route('/waterstates', methods=['GET'])
+def get_all_light_states():
+    waters = Water.query.all()
+    water_states = [water.to_dict() for water in waters]
+    return jsonify(water_states), 200
+
+
 # Get water system state
-@app.route('/waterstate/<int:water_id>', methods=['GET'])
+@app.route('/waterstates/<int:water_id>', methods=['GET'])
 def get_water_state(water_id):
-    water = WaterSystem.query.get(water_id)
+    water = Water.query.get(water_id)
     if water:
         return jsonify(water.to_dict()), 200
     else:
         return jsonify({"error": "Water system not found"}), 404
 
+
 # Update water system state
-@app.route('/water/<int:water_id>', methods=['PATCH'])
+@app.route('/waterstates/<int:water_id>', methods=['PATCH'])
 def update_water_state(water_id):
-    water = WaterSystem.query.get(water_id)
+    water = Water.query.get(water_id)
     if not water:
         return jsonify({"error": "Water system not found"}), 404
 
     data = request.get_json()
-    action = data.get('action')
+    action = data.get('status')
 
     if action in ['on', 'off']:
         water.status = action
@@ -108,5 +130,6 @@ def update_water_state(water_id):
     else:
         return jsonify({"error": "Invalid action"}), 400
 
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True)
