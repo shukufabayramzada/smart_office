@@ -60,7 +60,7 @@ def index():
 
 
 # Get all light states
-@app.route('/lightstates', methods=['GET'])
+@app.get('/lightstates')
 def get_all_light_states():
     lights = Light.query.all()
     light_states = [light.to_dict() for light in lights]
@@ -68,7 +68,7 @@ def get_all_light_states():
 
 
 # Get light state
-@app.route('/lightstates/<int:light_id>', methods=['GET'])
+@app.get('/lightstate/<int:light_id>')
 def get_light_state(light_id):
     light = Light.query.get(light_id)
     if light:
@@ -78,7 +78,7 @@ def get_light_state(light_id):
 
 
 # Update light state
-@app.route('/lightstates/<int:light_id>', methods=['PATCH'])
+@app.patch('/lightstates/<int:light_id>')
 def update_light_state(light_id):
     light = Light.query.get(light_id)
     if not light:
@@ -96,7 +96,7 @@ def update_light_state(light_id):
 
 
 # Get all water states
-@app.route('/waterstates', methods=['GET'])
+@app.get('/waterstates')
 def get_all_light_states():
     waters = Water.query.all()
     water_states = [water.to_dict() for water in waters]
@@ -104,7 +104,7 @@ def get_all_light_states():
 
 
 # Get water system state
-@app.route('/waterstates/<int:water_id>', methods=['GET'])
+@app.get('/waterstate/<int:water_id>')
 def get_water_state(water_id):
     water = Water.query.get(water_id)
     if water:
@@ -114,7 +114,7 @@ def get_water_state(water_id):
 
 
 # Update water system state
-@app.route('/waterstates/<int:water_id>', methods=['PATCH'])
+@app.patch('/waterstates/<int:water_id>')
 def update_water_state(water_id):
     water = Water.query.get(water_id)
     if not water:
