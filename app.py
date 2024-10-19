@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 from models.models import Light, WaterSystem
 from database.db import db
@@ -9,6 +9,8 @@ import click
 
 
 app = Flask(__name__)
+CORS(app, origins=["https://smartof.vercel.app"])
+
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///smart_office.db'
