@@ -8,50 +8,68 @@
   "host": "https://smart-office.onrender.com",
   "basePath": "/",
   "paths": {
-    "/lightstate": {
+    "/lightstate/{light_id}": {
       "get": {
         "summary": "Get light state",
+        "parameters": [
+          {
+            "name": "light_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID of the light to retrieve the state"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Light state retrieved",
             "schema": {
               "type": "object",
               "properties": {
+                "id": {
+                  "type": "integer"
+                },
                 "status": {
                   "type": "string"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Light not found"
           }
         }
       }
     },
-    "/light/on": {
-      "post": {
-        "summary": "Turn light on",
-        "responses": {
-          "200": {
-            "description": "Light turned on"
+    "/light/{light_id}": {
+      "patch": {
+        "summary": "Turn light on or off",
+        "parameters": [
+          {
+            "name": "light_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID of the light to update"
+          },
+          {
+            "name": "action",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "action": {
+                  "type": "string",
+                  "enum": ["on", "off"]
+                }
+              }
+            }
           }
-        }
-      }
-    },
-    "/light/off": {
-      "post": {
-        "summary": "Turn light off",
+        ],
         "responses": {
           "200": {
-            "description": "Light turned off"
-          }
-        }
-      }
-    },
-    "/waterstate": {
-      "get": {
-        "summary": "Get water state",
-        "responses": {
-          "200": {
-            "description": "Water state retrieved",
+            "description": "Light state updated",
             "schema": {
               "type": "object",
               "properties": {
@@ -60,26 +78,92 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Light not found"
+          },
+          "400": {
+            "description": "Invalid action"
           }
         }
       }
     },
-    "/water/on": {
-      "post": {
-        "summary": "Turn water on",
+    "/waterstate/{water_id}": {
+      "get": {
+        "summary": "Get water system state",
+        "parameters": [
+          {
+            "name": "water_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID of the water system to retrieve the state"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Water turned on"
+            "description": "Water system state retrieved",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Water system not found"
           }
         }
       }
     },
-    "/water/off": {
-      "post": {
-        "summary": "Turn water off",
+    "/water/{water_id}": {
+      "patch": {
+        "summary": "Turn water on or off",
+        "parameters": [
+          {
+            "name": "water_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID of the water system to update"
+          },
+          {
+            "name": "action",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "action": {
+                  "type": "string",
+                  "enum": ["on", "off"]
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Water turned off"
+            "description": "Water system state updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Water system not found"
+          },
+          "400": {
+            "description": "Invalid action"
           }
         }
       }
