@@ -6,11 +6,13 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from api.light import light_bp
 from api.water import water_bp
 from core.commands import add_sample_data
+from core.config import s_logger as logger
 from database.db import db
 
 app = Flask(__name__)
 CORS(app)
 
+logger.info('Server has started')
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///smart_office.db'
@@ -33,6 +35,7 @@ app.cli.add_command(add_sample_data)  # type: ignore
 
 @app.route("/")
 def index():
+    logger.info('Home page accessed')
     return "Welcome to Smart Office!"
 
 
