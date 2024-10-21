@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
-from flask_swagger_ui import get_swaggerui_blueprint
 from flask_migrate import Migrate
+from flask_swagger_ui import get_swaggerui_blueprint
 
 from api.light import light_bp
 from api.water import water_bp
