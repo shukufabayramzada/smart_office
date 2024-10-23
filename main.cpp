@@ -1,56 +1,66 @@
-#include <ESP8266WiFi.h>
-#include <ESP8266HTTPClient.h>
+#include <WiFi.h>
+#include <WiFiClientSecure.h>
+#include <HTTPClient.h>
 
 const char* ssid = "Holberton - Students";
 const char* password = "HBTNStuds24";
 
 int relayPinWater = 3;
 int relayPinLight = 2;
-
 bool switchStateWater = false;
 bool switchStateLight = false;
 
-WiFiClient wifiClient;
+WiFiClientSecure wifiClientSecure;
 
 void setup() {
   pinMode(relayPinWater, OUTPUT);
   pinMode(relayPinLight, OUTPUT);
-
   digitalWrite(relayPinWater, LOW);
   digitalWrite(relayPinLight, LOW);
 
   Serial.begin(115200);
-  WiFi.begin(ssid, password);
 
+  WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(1000);
+    Serial.println("Connecting to WiFi...");
   }
 
   Serial.println("Connected to WiFi");
+
+  wifiClientSecure.setInsecure();
 }
 
 void loop() {
   if (WiFi.status() == WL_CONNECTED)
   {
-
-    checkState("172.17.221.251:5000/waterstate", relayPinWater, switchStateWater);
-
-
-    checkState("172.17.221.251:5000/lightstate", relayPinLight, switchStateLight);
+    checkState("https://smart-office.onrender.com/waterstate/1", relayPinWater, switchStateWater);
+    checkState("https://smart-office.onrender.com/lightstate/1", relayPinLight, switchStateLight);
   }
   else
   {
     Serial.println("WiFi not connected");
   }
 
-  delay(5000);
+  delay(1000);
 }
 
 void checkState(const char* url, int relayPin, bool& switchState) {
   HTTPClient http;
-  http.begin(wifiClient, url);
+  http.begin(wifiClientSecure, url);
   int httpCode = http.GET();
+
+  if (httpCode == HTTP_CODE_MOVED_PERMANENTLY || httpCode == HTTP_CODE_FOUND) {
+    String newUrl = http.getLocation();
+    Serial.print("Redirected to: ");
+    Serial.println(newUrl);
+
+    http.end();
+
+    http.begin(wifiClientSecure, newUrl);
+    httpCode = http.GET();
+  }
 
   if (httpCode > 0)
   {
@@ -59,7 +69,7 @@ void checkState(const char* url, int relayPin, bool& switchState) {
     Serial.println(url);
     Serial.println(payload);
 
-    if (payload.indexOf("on") > -1)
+    if (payload.indexOf("true") > -1)
     {
       switchState = true;
     }

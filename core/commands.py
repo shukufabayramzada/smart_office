@@ -39,4 +39,4 @@ def add_sample_data():
     db.session.commit()
     print("Water data added")
 
-    print("Sample data added to the database.")
+    print("Sample data added to the database")
