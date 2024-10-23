@@ -86,7 +86,7 @@
                 "status": {
                   "type": "string",
                   "description": "Desired light status",
-                  "enum": ["on", "off"]
+                  "enum": ["true", "false"]
                 }
               }
             }
@@ -191,7 +191,7 @@
                 "status": {
                   "type": "string",
                   "description": "Desired water system status",
-                  "enum": ["on", "off"]
+                  "enum": ["true", "false"]
                 }
               }
             }

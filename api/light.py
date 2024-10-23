@@ -40,7 +40,7 @@ def update_light_state(light_id):
     data = request.get_json()
     action = data.get('status')
 
-    if action in ['on', 'off']:
+    if action in ['true', 'false']:
         light.status = action
         db.session.commit()
         logger.info(f'Light {light_id} turned {action}')

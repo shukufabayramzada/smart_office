@@ -40,7 +40,7 @@ def update_water_state(water_id):
     data = request.get_json()
     action = data.get('status')
 
-    if action in ['on', 'off']:
+    if action in ['true', 'false']:
         water.status = action
         db.session.commit()
         logger.info(f'Water system {water_id} turned {action}')
