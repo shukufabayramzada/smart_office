@@ -5,8 +5,8 @@
 const char* ssid = "Holberton - Students";
 const char* password = "HBTNStuds24";
 
-int PinWater = 5;
-int PinLight = 2;
+int PinWater = 33;
+int PinLight = 32;
 bool switchStateWater = false;
 bool switchStateLight = false;
 
